@@ -1,0 +1,32 @@
+% Binarise the image with Threshold = (Tmin+Tmax)/2
+% Here, Tmin  = minimum pixel value and Tmax = maximum pixel value
+
+load 'l256.dat';
+A = importdata('l256.dat');
+n = size(A);
+B = zeros(n);
+max = A(1,1);
+min = A(1,1);
+for m = 1:n
+    for n = 1:n
+        if A(m,n) > max
+            max = A(m,n);
+        end
+        if A(m,n) < min
+            min = A(m,n);
+        end
+    end
+end
+disp(max);
+disp(min);
+T = (max+min)/2;
+for m = 1:n
+    for n = 1:n
+        if A(m,n) > T
+            B(m,n) = 1;
+        else
+            B(m,n) = 0;
+        end
+    end
+end
+figure,imshow(B, [0, 1]);
