@@ -1,4 +1,4 @@
-%Down-sampling the image twice
+% Down-sampling the image twice
 
 load 'l256.dat';
 A = importdata('l256.dat');
