@@ -1,5 +1,5 @@
 % Binarise the image with Threshold = (Tmin+Tmax)/2
-% Here, Tmin  = minimum pixel value and Tmax = maximum pixel value
+%Here, Tmin  = minimum pixel value and Tmax = maximum pixel value
 
 load 'l256.dat';
 A = importdata('l256.dat');
