@@ -1,0 +1,125 @@
+%Down-sampling the image twice
+
+load 'l256.dat';
+A = importdata('l256.dat');
+n = size(A);
+
+%figure command is used to display multiple images in different windows
+%else, the same window gets reused for the new one.
+figure,imshow(A, [0, 255]);
+
+impixelinfo; %this will show the intensity value when cursor is placed
+
+s = n/2;
+D = zeros(s);
+for i = 2:2:n
+   for j = 2:2:n
+       p = i/2;
+       q = j/2;
+       D(p,q) = A(i,j);
+   end
+end
+
+figure,imshow(D, [0, 255]);
+impixelinfo;
+
+t = s/2;
+DD = zeros(t);
+for i = 2:2:s
+   for j = 2:2:s
+       p = i/2;
+       q = j/2;
+       DD(p,q) = D(i,j);
+   end
+end
+
+figure,imshow(DD, [0, 255]);
+impixelinfo;
+
+%-----------------------------------up-sampling the image twice-----------------------------------
+% First time up sampling
+U = zeros(t*2);
+Us = size(U);
+Ud = size(DD);
+Ui = 1;
+Uj = 1;
+
+for i = 1:2:Us
+    for j = 1:2:Us
+        U(i,j) = DD(Ui, Uj);
+        Uj = Uj+1;
+    end
+    Uj = 1;
+    Ui = Ui+1;
+    if((Ui > Ud))
+        break
+    end;
+end;
+
+%processing U now
+for i = 1:2:Us
+    for j = 2:2:Us
+        if(j+1 <= Us)
+            U(i,j) = (U(i,j-1)+U(i,j+1))/2;
+        else
+            U(i,j) = U(i,j-1);
+        end;
+    end;
+end;
+
+for i = 2:2:Us
+    for j = 1:1:Us
+        if(i+1 <= Us)
+            U(i,j) = (U(i-1,j)+U(i+1,j))/2;
+        else
+            U(i,j) = U(i-1,j);
+        end;
+    end;
+end;
+
+figure,imshow(U, [0, 255]);
+impixelinfo;
+
+%-------------------------------------------------------------------------------------------
+% Second time up sampling
+UNew = zeros(t*4);
+Us = size(UNew);
+Ud = size(U);
+Ui = 1;
+Uj = 1;
+
+for i = 1:2:Us
+    for j = 1:2:Us
+        UNew(i,j) = U(Ui, Uj);
+        Uj = Uj+1;
+    end
+    Uj = 1;
+    Ui = Ui+1;
+    if((Ui > Ud))
+        break
+    end;
+end;
+
+%processing U now
+for i = 1:2:Us
+    for j = 2:2:Us
+        if(j+1 <= Us)
+            UNew(i,j) = (UNew(i,j-1)+UNew(i,j+1))/2;
+        else
+            UNew(i,j) = UNew(i,j-1);
+        end;
+    end;
+end;
+
+for i = 2:2:Us
+    for j = 1:1:Us
+        if(i+1 <= Us)
+            UNew(i,j) = (UNew(i-1,j)+UNew(i+1,j))/2;
+        else
+            UNew(i,j) = UNew(i-1,j);
+        end;
+    end;
+end;
+
+figure,imshow(UNew, [0, 255]);
+impixelinfo;
