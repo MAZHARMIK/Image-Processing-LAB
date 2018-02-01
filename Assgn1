@@ -1,4 +1,4 @@
-%Binarise the image with Threshold = 128
+% Binarise the image with Threshold = 128
 
 %This could be directly done as
 % load 'l256.dat';
