@@ -1,0 +1,37 @@
+% Changing the dynamic range of an image
+A = imread('l256.dat');
+figure,imshow(A, [0, 256]);
+n = size(A);
+
+prompt = 'Enter the value of c: ';
+c = input(prompt);
+
+prompt = 'Enter the value of d: ';
+d = input(prompt);
+
+b = -1;
+a = 256;
+
+for m = 1:n
+    for n = 1:n
+        if A(m,n) > b
+            b = A(m,n);
+        end
+        if A(m,n) < a
+            a = A(m,n);
+        end
+    end
+end
+
+display(a);
+display(b);
+
+for m = 1:n
+    for n = 1:n
+        A(m,n) = A(m,n)-a;
+        A(m,n) = A(m,n)*((d-c)/(b-a));
+        A(m,n) = A(m,n)+c;
+    end
+end
+
+figure,imshow(A, [0, 256]);
