@@ -1,0 +1,22 @@
+% Gray level slicing
+A = imread('l256.dat');
+figure,imshow(A, [0, 256]);
+n = size(A);
+
+prompt = 'Enter the value of a: ';
+a = input(prompt);
+
+prompt = 'Enter the value of b: ';
+b = input(prompt);
+
+for m = 1:n
+    for n = 1:n
+        if A(m,n) >= a && A(m,n) <=b
+            A(m,n) = 1;
+        else
+            A(m,n) = 0;
+        end
+    end
+end
+
+figure,imshow(A, [0, 1]);
