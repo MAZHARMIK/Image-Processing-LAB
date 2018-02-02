@@ -1,0 +1,32 @@
+% Power law transformation of an image and inverse law transformation for different gamma values
+
+A = imread('l256.dat');
+figure,imshow(A);
+impixelinfo;
+A = double(A)/255;
+n = size(A);
+C = 1;
+Gamma1 = [1,3.5];
+
+for k = 1:length(Gamma)
+    for i = 1:n
+        for j = 1:n
+            A(i,j) = C * A(i,j).^Gamma1(k);
+        end
+    end
+figure,imshow(A);
+impixelinfo;
+end
+
+%Inverse power law transformation of an image and inverse law transformation for different gamma values
+
+Gamma2 = [0.1,0.5];
+for k = 1:length(Gamma2)
+    for i = 1:n
+        for j = 1:n
+            A(i,j) = C * A(i,j).^Gamma2(k);
+        end
+    end
+figure,imshow(A);
+impixelinfo;
+end
