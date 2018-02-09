@@ -1,0 +1,13 @@
+%Negation of an image using NOT operator
+
+A = imread('l256.dat');
+
+n = size(A);
+figure, imshow(A, [0, 255]);
+for i = 1:n
+    for j = 1:n
+        A(i,j) = bitcmp(A(i,j));
+    end
+end
+
+figure,imshow(A, [0, 255]);
