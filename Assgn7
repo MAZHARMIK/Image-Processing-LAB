@@ -1,13 +1,40 @@
-%Negation of an image using NOT operator
+%Negation of an image using Logical NOT concept (Without using Bitcmp Matlab command)
 
-A = imread('l256.dat');
-
+load 'l256.dat';
+A = importdata('l256.dat');
 n = size(A);
 figure, imshow(A, [0, 255]);
+
 for i = 1:n
     for j = 1:n
-        A(i,j) = bitcmp(A(i,j));
+        ascii = A(i,j);
+        z = 1;
+        bits = zeros(1,8);
+        while(ascii~=0)
+            bits(z) = mod(ascii, 2);
+            z = z+1;
+            ascii = floor(ascii/2);
+        end
+    
+        for biti=8:-1:4
+            temp = bits(8-(biti-1));
+            bits(8-(biti-1)) = bits(biti);
+            bits(biti) = temp;
+        end
+        for biti=1:1:8
+            if(bits(biti)==1)
+                bits(biti) = 0;
+            else
+                bits(biti) = 1;
+            end
+        end
+        base = 128;
+        sum = 0;
+        for final=1:1:8
+            sum = sum+(bits(final)*base);
+            base = floor(base/2);
+        end
+        A(i,j) = sum;
     end
 end
-
-figure,imshow(A, [0, 255]);
+figure,imshow(A, [0, 256]);
