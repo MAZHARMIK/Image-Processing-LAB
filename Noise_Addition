@@ -1,0 +1,25 @@
+%Noise addition
+
+load 'l256.dat';
+A = importdata('l256.dat');
+[row, column] = size(A);
+figure(1), imshow(A, [0, 255]);
+
+prompt = 'Enter the values of p and q : ';
+p = input(prompt);
+q = input(prompt);
+
+min=0;
+max=1;
+x = ceil(255*(min+rand(1,(p*2))*(max-min)));
+
+% Noise addition
+for i = 1:2:(p*2)
+    display(A(x(i),x(i+1)));
+    A(x(i),x(i+1)) = A(x(i),x(i+1)) + ((A(x(i),x(i+1))*q)/100);
+    display(A(x(i),x(i+1)));
+end
+
+
+
+figure(2),imshow(A, [0, 255]);
