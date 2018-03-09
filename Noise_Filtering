@@ -1,0 +1,42 @@
+%Noise Removal
+
+load 'l256.dat';
+A = importdata('l256.dat');
+[row, column] = size(A);
+figure(1), imshow(A, [0, 255]);
+B = zeros(size(A));
+prompt = 'Enter the values of p and q : ';
+p = input(prompt);
+q = input(prompt);
+p = ceil((p*(255*255))/100);
+fprintf('NUmber of pixels being manipulated = %d\n', p);
+min=0;
+max=1;
+x = ceil(255*(min+rand(1,(p*2))*(max-min)));
+
+% Noise addition
+for i = 1:2:(p*2)
+      A(x(i),x(i+1)) = A(x(i),x(i+1)) + ((A(x(i),x(i+1))*q)/100);
+end
+
+figure(2),imshow(A, [0, 255]);
+
+
+% Noise Filtering  - Mean Filtering                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+prompt = 'Enter the dimension of kernel : ';
+N = input(prompt); %Take 3*3 as example
+M = input(prompt);
+sum = 0;
+for i = 1:row-N
+    for j = 1:column-M
+          sum = 0;
+          for k = i:i+N-1
+              for l = j:j+N-1
+                  sum = sum + A(k,l);
+              end
+          end
+          B(i+1,j+1) = floor(sum/(N*N));
+    end
+end
+
+figure(3),imshow(B, [0, 255]);
