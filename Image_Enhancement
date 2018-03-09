@@ -1,0 +1,63 @@
+%Image enhancement Operation
+
+load 'filament.jpg';
+A1 = imread('filament.jpg');
+A = double(rgb2gray(A1));
+[row, column] = size(A);
+figure(1), imshow(A, [0, 255]);
+
+E = 4;
+K0 = 0.4;
+K1 = 0.02;
+K2 = 0.4;
+sum = 0;
+
+%calculating Global mean
+for i = 1:row
+    for j = 1:column
+            sum = sum + A(i,j);
+    end
+end
+
+MG = (sum/(row*column));
+
+%calculating Global Standard Deviation
+sum = 0;
+for i = 1:row
+    for j = 1:column
+                sum  = sum + (A(i,j)-MG)^2 ;
+    end
+end
+
+
+DG = (sqrt(sum/(row*column)));
+
+% Neighbourhood operation
+
+prompt = 'Enter the dimension of neighbourhood : ';
+N = input(prompt);
+M = input(prompt);
+for i = 1:N:row-N
+    for j = 1:M:column-M
+            local_sum1 = 0;
+            local_sum2 = 0;
+            for k = i:N
+                for l = j:M
+                    local_sum1 = local_sum1 + A(k,l);
+                end
+            end
+            local_mean = local_sum1/(N*M);
+            for x = i:N
+                for y = j:M
+                    local_sum2  = local_sum2 + (A(x,y)-local_mean)^2 ;
+                end
+            end
+            local_std = (sqrt(local_sum2/(N*M)));
+            if((local_mean <= K0*MG) && ((K1*DG <= local_std <= K2*DG)))
+                A(i,j) = E*A(i,j);
+            end
+    end
+end
+
+
+figure(2),imshow(A, [0, 255]);
