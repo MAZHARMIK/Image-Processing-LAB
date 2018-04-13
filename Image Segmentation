@@ -1,0 +1,84 @@
+% segmentation
+
+A=load('l256.dat');
+[row, column] = size(A);
+
+figure(1), imshow(A, [0, 255]);
+
+B = zeros(size(A));
+
+%calculating mean gray values of corner pixels
+MeanGrayValue = 0 ;
+RemainingGrayValue = 0;
+
+for i = 1:row
+    for j = 1:column     
+            RemainingGrayValue = RemainingGrayValue + A(i, j);
+    end
+end
+
+for i = 1:10
+    for j = 1:10     
+            MeanGrayValue = MeanGrayValue + A(i, j);
+    end
+end
+
+for i = 1:10
+    for j = 246:256     
+            MeanGrayValue = MeanGrayValue + A(i, j);
+    end
+end
+
+for i = 246:256
+    for j = 1:10     
+            MeanGrayValue = MeanGrayValue + A(i, j);
+    end
+end
+
+for i = 246:256
+    for j = 246:256     
+            MeanGrayValue = MeanGrayValue + A(i, j);
+    end
+end
+RemainingGrayValue = RemainingGrayValue - MeanGrayValue ; 
+display(MeanGrayValue/400);
+display(RemainingGrayValue/((256*256)-400));
+MeanGrayValue = MeanGrayValue/400;
+RemainingGrayValue = RemainingGrayValue/((256*256)-400);
+
+Told = 0;
+Tnew = (MeanGrayValue + RemainingGrayValue)/2;
+
+while Told~=Tnew
+    count1 = 0;
+    sum1 = 0;
+    count2 = 0;
+    sum2 = 0;
+    for i = 1:row
+        for j = 1:column     
+            if A(i,j) < Tnew
+                count1 = count1 + 1;
+                sum1 = sum1 + A(i,j);
+            else
+                count2 = count2 + 1;
+                sum2 = sum2 + A(i,j);
+            end
+        end
+    end
+    MeanGrayValue = sum1/count1;
+    RemainingGrayValue = sum2/count2;
+    Told = Tnew;
+    Tnew = (MeanGrayValue + RemainingGrayValue)/2;
+end
+
+for i = 1:row
+    for j = 1:column     
+            if A(i, j) > Told
+                A(i,j) = 1;
+            else
+                A(i, j) = 0;
+            end
+    end
+end
+
+figure(2), imshow(A, [0, 1]);
