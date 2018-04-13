@@ -13,7 +13,7 @@ B = zeros(size(A));
 
 for i = 1:row
     for j = 1:column     
-            mat1 = [Sx 1 0; 1 Sy 0; 0 0 1];
+            mat1 = [Sx 0 0; 0 Sy 0; 0 0 1];
             mat2 = [i; j; 1];
             mat3 = mat1*mat2;
             x1 = round(mat3(1, 1));
