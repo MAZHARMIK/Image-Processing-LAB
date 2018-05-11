@@ -1,0 +1,66 @@
+
+A = importdata('l256.dat');
+
+[height, width] = size(A);
+result = zeros(100+height, 100+width);
+result2 = zeros(height, width);
+figure, imshow(A, [0, 256]);
+
+originx = floor(height/2);
+originy = floor(width/2);
+
+angle = input('Enter angle of rotation:');
+angle = -angle*3.14/180;
+a0 = cos(angle);
+b0 = -sin(angle);
+a1 = -b0;
+b1 = a0;
+
+minx = 10000;
+miny = 10000;
+maxx = -10000;
+maxy = -10000;
+
+for i = 1 : height
+    for j = 1 : width
+        x = round(a0*i+a1*j);
+        y = round(b0*i+b1*j);
+        minx = min(x, minx);
+        miny = min(y, miny);
+        maxx = max(x, maxx);
+        maxy = max(y, maxy);
+    end
+end
+xans = maxx-255;
+yans = maxy-255;
+for i = 1 : height
+    for j = 1 : width
+        x = round(a0*i+a1*j);
+        if x == maxx;
+            yans = round(b0*i+b1*j);
+        end
+    end
+end
+
+for i = 1 : height
+    for j = 1 : width
+        x = round(a0*i+a1*j);
+        y = round(b0*i+b1*j);
+        x2 = x -maxx+255;
+        y2 = y - yans;
+        if (x2 <= 255 && x2 >0 && y2 <= 255 && y2 >0)
+            result2(x2, y2) = A(i, j);
+        end
+        
+        x = x-minx;
+        y = y-miny;
+
+        if (x <= 455 && x >0 && y+1 <= 455 && y>0)
+            result(x, y) = A(i, j);
+        end
+    end
+end
+
+
+figure, imshow(result, [0, 256]);
+figure, imshow(result2, [0, 256]);
